@@ -4,9 +4,9 @@
 
 MouseGPT is a spook-tacular Halloween toy mouse that talks to trick-or-treaters. Leveraging GPT-3.5 Turbo and ElevenLabs, the mouse offers a unique conversational experience, packed with humor and wit.
 
-<img width="500" alt="image" src="https://github.com/SidU/mousegpt/assets/4107912/6d4d3ad9-e535-4116-9dfd-59da675bc091">
+![mousegpt_cover](https://github.com/SidU/mousegpt/assets/4107912/84985806-d443-4801-af23-4b3c6bff49d1)
 
-[Watch Demo](https://github.com/SidU/mousegpt/assets/4107912/dd2b4d61-81a3-45f2-b6c7-54ed91404552)
+
 
 ## Features
 
