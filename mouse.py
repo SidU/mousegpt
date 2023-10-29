@@ -10,7 +10,7 @@ duration = 5  # in seconds
 sampling_rate = 44100
 num_channels = 1
 dtype = np.int16
-silence_threshold = 500  # adjustable
+silence_threshold = 174  # adjustable
 max_file_size_bytes = 25 * 1024 * 1024  # 25MB
 
 def main():
@@ -29,14 +29,20 @@ def main():
             # Record audio in chunks and append to a list
             audio_chunk = sd.rec(int(sampling_rate * duration), samplerate=sampling_rate, channels=num_channels, dtype=dtype)
             sd.wait()
-            if np.abs(audio_chunk).mean() < silence_threshold:
-                silence_count += 1
-            else:
-                silence_count = 0
+            chunk_mean = np.abs(audio_chunk).mean()
+            print(f"Chunk mean: {chunk_mean}")  # Debugging line
 
-            audio_data.extend(audio_chunk)
-            
+            if chunk_mean > silence_threshold:
+                print("Sound detected, adding to audio data.")
+                audio_data.extend(audio_chunk)
+                silence_count = 0  # Reset the silence counter
+            else:
+                silence_count += 1
+
             if silence_count >= 1:  # 1 seconds of silence
+                if len(audio_data) == 0:  # Check if there's any non-silent data collected
+                    print("Only silence detected, continuing to listen...")
+                    continue  # Skip the rest of the loop to keep listening
                 break
 
         # Create a temporary mp3 file to save the audio
