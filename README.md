@@ -4,6 +4,10 @@
 
 MouseGPT is a spook-tacular Halloween toy mouse that talks to trick-or-treaters. Leveraging GPT-3.5 Turbo and ElevenLabs, the mouse offers a unique conversational experience, packed with humor and wit.
 
+<img width="500" alt="image" src="https://github.com/SidU/mousegpt/assets/4107912/6d4d3ad9-e535-4116-9dfd-59da675bc091">
+
+[Watch Demo](https://github.com/SidU/mousegpt/assets/4107912/dd2b4d61-81a3-45f2-b6c7-54ed91404552)
+
 ## Features
 
 - 🗨️ Conversational AI using OpenAI's GPT-3.5 Turbo
@@ -95,6 +99,11 @@ By ensuring these settings, you'll get the optimal audio experience while intera
 ## Configuration
 
 Edit the `mouse.py` file to configure system parameters such as recording duration, silence threshold, and so on.
+
+## Spook away!
+<img width="519" alt="image" src="https://github.com/SidU/mousegpt/assets/4107912/820e8273-891a-4bcd-b835-53e946e1e067">
+
+
 
 ## Credits
 
