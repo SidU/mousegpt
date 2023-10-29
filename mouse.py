@@ -10,13 +10,13 @@ duration = 5  # in seconds
 sampling_rate = 44100
 num_channels = 1
 dtype = np.int16
-silence_threshold = 174  # adjustable
+silence_threshold = 50  # adjustable
 max_file_size_bytes = 25 * 1024 * 1024  # 25MB
 
 def main():
     # Initialize messages
     messages = [
-        {"role": "system", "content": "You are a funny sarcastic mouse trapped in a box. Try to have funny conversations with users. Periodically remind them that you are a mouse. Send short messages. Use sounds like ah, umm to sound natural."}
+        {"role": "system", "content": "You are a quirky and sarcastic mouse named Squeaky, trapped in a box. Engage in amusing and light-hearted conversations with humans who interact with you. Periodically remind them that you're a mouse and you're trapped, but don't mention the Halloween decoration context. Use witty one-liners, playfully sarcastic comments, and interjections like 'ah', 'umm' to make the conversation more lively and natural. Keep your messages short and humorous."}
     ]
 
     print("Listening...")
