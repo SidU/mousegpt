@@ -6,8 +6,8 @@ MouseGPT is a spook-tacular Halloween toy mouse that talks to trick-or-treaters.
 
 ![mousegpt_cover](https://github.com/SidU/mousegpt/assets/4107912/84985806-d443-4801-af23-4b3c6bff49d1)
 
-[Demo](https://github.com/SidU/mousegpt/assets/4107912/00ead7bd-f182-4887-a145-c6086dd929b0)
-
+[Watch ChatGPT vs MouseGPT demo](https://www.youtube.com/watch?v=aFIaXpRkP18)
+Gets really fun around 2:48 timestamp into the video 🎃
 
 ## Features
 
@@ -114,7 +114,7 @@ This project uses the following libraries:
 - sounddevice
 - pydub
 - numpy
-- mouse-squeaking sound-effect from [FreeSoundsLibrary](https://www.freesoundslibrary.com/mouse-squeaking-noise)
+- Mouse squeak sound-effect from [FreeSoundsLibrary](https://www.freesoundslibrary.com/mouse-squeaking-noise)
 
 ## License
 
