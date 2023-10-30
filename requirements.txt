@@ -1,0 +1,6 @@
+openai
+sounddevice
+numpy
+tempfile
+pydub
+elevenlabs
