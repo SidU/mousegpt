@@ -6,7 +6,7 @@ from pydub import AudioSegment
 from elevenlabs import generate, stream
 
 # Configure recording parameters
-duration = 5  # in seconds
+duration = 2  # in seconds
 sampling_rate = 44100
 num_channels = 1
 dtype = np.int16
