@@ -4,13 +4,14 @@ import numpy as np
 import tempfile
 from pydub import AudioSegment
 from elevenlabs import generate, stream
+import pygame
 
 # Configure recording parameters
 duration = 2  # in seconds
 sampling_rate = 44100
 num_channels = 1
 dtype = np.int16
-silence_threshold = 50  # adjustable
+silence_threshold = 30  # adjustable
 max_file_size_bytes = 25 * 1024 * 1024  # 25MB
 
 def main():
@@ -20,6 +21,10 @@ def main():
     ]
 
     print("Listening...")
+
+    # Initialize pygame mixer for sound effects
+    pygame.mixer.init()
+    pygame.mixer.music.load("mouse-squeaking-noise.mp3")
 
     while True:
         audio_data = []
@@ -56,6 +61,9 @@ def main():
             audio_segment.export(f.name, format="mp3")
             f.seek(0)
 
+            # Play the sound effect
+            pygame.mixer.music.play()
+
             # Transcribe audio using OpenAI API
             transcript = openai.Audio.transcribe("whisper-1", f)
 
@@ -71,6 +79,9 @@ def main():
         )
         assistant_reply = response['choices'][0]['message']['content']
         print(f"AI: {assistant_reply}")
+
+        # Stop the sound effect because we are about to speak.
+        pygame.mixer.music.stop()
 
         # Generate audio stream for the assistant's reply
         audio_stream = generate(
