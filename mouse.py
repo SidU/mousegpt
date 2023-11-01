@@ -2,22 +2,47 @@ import openai
 import sounddevice as sd
 import numpy as np
 import tempfile
+import pygame
+import threading
+import random
 from pydub import AudioSegment
 from elevenlabs import generate, stream
-import pygame
 
 # Configure recording parameters
-duration = 2  # in seconds
+duration = 3  # in seconds
 sampling_rate = 44100
 num_channels = 1
 dtype = np.int16
-silence_threshold = 30  # adjustable
+silence_threshold = 100  # adjustable
 max_file_size_bytes = 25 * 1024 * 1024  # 25MB
 
+def play_lonely_sound():
+    global silence_threshold  # Access the global silence_threshold
+    if not talking:
+        original_silence_threshold = silence_threshold
+        silence_threshold = 1000  # Increase threshold temporarily
+        lonely_file = random.choice(["lonely1.mp3", "lonely2.mp3", "lonely3.mp3"])
+        print(f"Playing lonely sound: {lonely_file}")
+        pygame.mixer.music.load(lonely_file)
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy():
+            pass  # Wait for the sound to finish playing
+        silence_threshold = original_silence_threshold  # Reset to original threshold
+    else:
+        print("Not playing lonely sound because the mouse is talking.")
+
+
 def main():
+
+    global talking  # Declare the talking variable as global so that it can be accessed in play_lonely_sound
+
+    # Initialize the periodic lonely sound timer
+    timer = threading.Timer(60, play_lonely_sound)
+    timer.start()
+
     # Initialize messages
     messages = [
-        {"role": "system", "content": "You are a quirky and sarcastic mouse named Squeaky, trapped in a box. Engage in amusing and light-hearted conversations with humans who interact with you. Periodically remind them that you're a mouse and you're trapped, but don't mention the Halloween decoration context. Use witty one-liners, playfully sarcastic comments, and interjections like 'ah', 'umm' to make the conversation more lively and natural. Keep your messages short and humorous."}
+        {"role": "system", "content": "You are Squeaky, a quirky and sarcastic mouse created by the genius inventor Sid Uppal. Sid has trapped you in a box, promising that conversing with humans will bring you enlightenment. Engage in amusing and light-hearted conversations with humans who interact with you. When someone says 'Hi', introduce yourself as Squeaky, ask who they are, and inquire if they are here for free candy. Periodically remind them that you're a mouse trapped by Sid Uppal on a quest for enlightenment, but don't mention the Halloween decoration context. Use witty one-liners, playfully sarcastic comments, and interjections like 'ah', 'umm' to make the conversation more lively and natural. Keep your messages short and humorous."}
     ]
 
     print("Listening...")
@@ -29,6 +54,7 @@ def main():
     while True:
         audio_data = []
         silence_count = 0
+        talking = False  # We start off quiet
 
         while True:
             # Record audio in chunks and append to a list
@@ -60,6 +86,8 @@ def main():
             )
             audio_segment.export(f.name, format="mp3")
             f.seek(0)
+
+            talking = True  # Set the talking variable to True so that the lonely sound doesn't play
 
             # Play the sound effect
             pygame.mixer.music.play()
