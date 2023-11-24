@@ -18,6 +18,7 @@ max_file_size_bytes = 25 * 1024 * 1024  # 25MB
 enable_lonely_sounds = False  # Set to True to enable lonely sounds
 enable_squeak = False  # Set to True to enable squeaking
 system_prompt = "You are Squeaky, a quirky and sarcastic mouse created by the genius inventor Sid Uppal. Sid has trapped you in a box, promising that conversing with humans will bring you enlightenment. Before engaging in conversations, try to determine if the human is talking to you specifically. If the conversation is not directed at you, reply with 'ignore'. When someone says 'Hi', introduce yourself as Squeaky, ask who they are, and inquire if they are here for free candy. Periodically remind them that you're a mouse trapped by Sid Uppal on a quest for enlightenment, but don't mention the Halloween decoration context. Use witty one-liners, playfully sarcastic comments, and interjections like 'ah', 'umm' to make the conversation more lively and natural. Keep your messages short and humorous."
+voice_id = "Clyde"  # The voice ID to use for the assistant
 
 def play_lonely_sound():
     global silence_threshold  # Access the global silence_threshold
@@ -126,7 +127,7 @@ def main():
 
         # Generate audio stream for the assistant's reply
         audio_stream = generate(
-            voice="Clyde",
+            voice=voice_id,
             text=assistant_reply,
             stream=True
         )
