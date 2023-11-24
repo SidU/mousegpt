@@ -15,6 +15,9 @@ num_channels = 1
 dtype = np.int16
 silence_threshold = 100  # adjustable
 max_file_size_bytes = 25 * 1024 * 1024  # 25MB
+enable_lonely_sounds = False  # Set to True to enable lonely sounds
+enable_squeak = False  # Set to True to enable squeaking
+system_prompt = "You are Squeaky, a quirky and sarcastic mouse created by the genius inventor Sid Uppal. Sid has trapped you in a box, promising that conversing with humans will bring you enlightenment. Before engaging in conversations, try to determine if the human is talking to you specifically. If the conversation is not directed at you, reply with 'ignore'. When someone says 'Hi', introduce yourself as Squeaky, ask who they are, and inquire if they are here for free candy. Periodically remind them that you're a mouse trapped by Sid Uppal on a quest for enlightenment, but don't mention the Halloween decoration context. Use witty one-liners, playfully sarcastic comments, and interjections like 'ah', 'umm' to make the conversation more lively and natural. Keep your messages short and humorous."
 
 def play_lonely_sound():
     global silence_threshold  # Access the global silence_threshold
@@ -36,20 +39,23 @@ def main():
 
     global talking  # Declare the talking variable as global so that it can be accessed in play_lonely_sound
 
-    # Initialize the periodic lonely sound timer
-    timer = threading.Timer(60, play_lonely_sound)
-    timer.start()
+    if enable_lonely_sounds:
+        # Initialize the periodic lonely sound timer
+        timer = threading.Timer(60, play_lonely_sound)
+        timer.start()
 
     # Initialize messages
     messages = [
-        {"role": "system", "content": "You are Squeaky, a quirky and sarcastic mouse created by the genius inventor Sid Uppal. Sid has trapped you in a box, promising that conversing with humans will bring you enlightenment. Before engaging in conversations, try to determine if the human is talking to you specifically. If the conversation is not directed at you, reply with 'ignore'. When someone says 'Hi', introduce yourself as Squeaky, ask who they are, and inquire if they are here for free candy. Periodically remind them that you're a mouse trapped by Sid Uppal on a quest for enlightenment, but don't mention the Halloween decoration context. Use witty one-liners, playfully sarcastic comments, and interjections like 'ah', 'umm' to make the conversation more lively and natural. Keep your messages short and humorous."}
+        {"role": "system", "content": system_prompt}
     ]
 
     print("Listening...")
 
     # Initialize pygame mixer for sound effects
     pygame.mixer.init()
-    pygame.mixer.music.load("mouse-squeaking-noise.mp3")
+
+    if enable_squeak:
+        pygame.mixer.music.load("mouse-squeaking-noise.mp3")
 
     while True:
         audio_data = []
@@ -89,8 +95,9 @@ def main():
 
             talking = True  # Set the talking variable to True so that the lonely sound doesn't play
 
-            # Play the sound effect
-            pygame.mixer.music.play()
+            if enable_squeak:
+                # Play the sound effect
+                pygame.mixer.music.play()
 
             # Transcribe audio using OpenAI API
             transcript = openai.Audio.transcribe("whisper-1", f)
@@ -113,8 +120,9 @@ def main():
             print("Ignoring conversation...")
             messages = messages[:-1]
 
-        # Stop the sound effect because we are about to speak.
-        pygame.mixer.music.stop()
+        if enable_squeak:
+            # Stop the sound effect because we are about to speak.
+            pygame.mixer.music.stop()
 
         # Generate audio stream for the assistant's reply
         audio_stream = generate(
