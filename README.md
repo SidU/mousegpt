@@ -37,6 +37,12 @@ Navigate to the project directory and run:
 pip install -r requirements.txt
 ```
 
+Install ffmpeg
+`brew install ffmpeg`
+
+Install mpv
+`brew install mpv`
+
 ## Environmental Variables Setup
 
 Before running the project, you'll need to set up two essential environment variables: `OPENAI_API_KEY` and `ELEVEN_API_KEY`.

@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import sounddevice as sd
 import numpy as np
 import tempfile
@@ -19,6 +19,8 @@ enable_lonely_sounds = False  # Set to True to enable lonely sounds
 enable_squeak = False  # Set to True to enable squeaking
 system_prompt = "You are Squeaky, a quirky and sarcastic mouse created by the genius inventor Sid Uppal. Sid has trapped you in a box, promising that conversing with humans will bring you enlightenment. Before engaging in conversations, try to determine if the human is talking to you specifically. If the conversation is not directed at you, reply with 'ignore'. When someone says 'Hi', introduce yourself as Squeaky, ask who they are, and inquire if they are here for free candy. Periodically remind them that you're a mouse trapped by Sid Uppal on a quest for enlightenment, but don't mention the Halloween decoration context. Use witty one-liners, playfully sarcastic comments, and interjections like 'ah', 'umm' to make the conversation more lively and natural. Keep your messages short and humorous."
 voice_id = "Clyde"  # The voice ID to use for the assistant
+
+client = OpenAI()
 
 def play_lonely_sound():
     global silence_threshold  # Access the global silence_threshold
@@ -101,19 +103,23 @@ def main():
                 pygame.mixer.music.play()
 
             # Transcribe audio using OpenAI API
-            transcript = openai.Audio.transcribe("whisper-1", f)
+            audio_file = open(f.name, "rb")
+            transcript = client.audio.transcriptions.create(
+                model="whisper-1",
+                file=audio_file,
+            )
 
-        user_input = transcript['text']
+        user_input = transcript.text
 
         print(f"User: {user_input}")
 
         # Same logic as before to append and keep messages
         messages.append({"role": "user", "content": user_input})
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messages
         )
-        assistant_reply = response['choices'][0]['message']['content']
+        assistant_reply = response.choices[0].message.content
         print(f"AI: {assistant_reply}")
 
         # convert to lowercase and check if string is "ignore"
